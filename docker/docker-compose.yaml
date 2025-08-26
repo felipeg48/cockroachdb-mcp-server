@@ -1,0 +1,74 @@
+services:
+  roach1:
+    container_name: roach1
+    image: cockroachdb/cockroach:v25.2.0
+    hostname: roach1
+    volumes:
+      - ./certs:/certs
+      - roach1:/cockroach/cockroach-data
+    # Update the command to use --http-addr=roach1:8443
+    command: start --certs-dir=/certs --advertise-addr=roach1 --join=roach1,roach2,roach3
+    healthcheck:
+      # Update healthcheck to use port 8443
+      test: ["CMD", "curl", "-f", "https://roach1:8443/health?ready=1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - roaches
+
+  roach2:
+    container_name: roach2
+    image: cockroachdb/cockroach:v25.2.0
+    hostname: roach2
+    volumes:
+      - ./certs:/certs
+      - roach2:/cockroach/cockroach-data
+    command: start --certs-dir=/certs --advertise-addr=roach2 --join=roach1,roach2,roach3
+    healthcheck:
+      test: ["CMD", "curl", "-f", "https://roach2:8443/health?ready=1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - roaches
+
+  roach3:
+    container_name: roach3
+    image: cockroachdb/cockroach:v25.2.0
+    hostname: roach3
+    volumes:
+      - ./certs:/certs
+      - roach3:/cockroach/cockroach-data
+    command: start --certs-dir=/certs --advertise-addr=roach3 --join=roach1,roach2,roach3
+    healthcheck:
+      test: ["CMD", "curl", "-f", "https://roach3:8443/health?ready=1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - roaches
+
+  haproxy:
+    container_name: haproxy
+    image: haproxy:alpine
+    depends_on:
+      - roach1
+      - roach2
+      - roach3
+    volumes:
+        - ./etc/haproxy/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg
+    ports:
+      - "26257:26257"
+      - "8080:8080"
+    networks:
+      - roaches
+
+volumes:
+  roach1:
+  roach2:
+  roach3:
+
+networks:
+  roaches:
+    driver: bridge
