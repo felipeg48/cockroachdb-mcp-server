@@ -85,8 +85,8 @@ I'm using this MCP server in the https://www.warp.dev/[WARP Terminal^] to manage
   }
 }
 ----
-.<1> You need the `SESSION_COOKIE` that you can get from the login process (Explained above).
-.<2> You need the `CERTS_DIR` that points to the directory where your certificates are stored. It will be the full path. 
+<1> You need the `SESSION_COOKIE` that you can get from the login process (Explained above).
+<2> You need the `CERTS_DIR` that points to the directory where your certificates are stored. It will be the full path. 
 
 This is my actual configuration:
 
