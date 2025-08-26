@@ -1,0 +1,45 @@
+spring:
+  main:
+    banner-mode: off
+
+  ai:
+    mcp:
+      server:
+        stdio: false
+        name: cockroachdb-mcp-server
+        version: 0.0.1
+        type: ASYNC
+        capabilities:
+          tool: true
+          resource: true
+          prompt: true
+          completion: true
+
+  ssl:
+    bundle:
+      pem:
+        cockroachdb:
+          keystore:
+            certificate: ${cockroachdb.certs.dir}/client.root.crt
+            private-key: ${cockroachdb.certs.dir}/client.root.key
+          truststore:
+            certificate: ${cockroachdb.certs.dir}/ca.crt
+          options:
+            hostname-verification: none
+            protocols: TLSv1.2,TLSv1.3
+
+cockroachdb:
+  username: ${COCKROACHDB_USERNAME:root}
+  password: ${COCKROACHDB_PASSWORD:password}
+  certs:
+    dir: ${CERTS_DIR:./certs}
+  api:
+    host: ${COCKROACHDB_HOST:localhost}
+    port: ${COCKROACHDB_PORT:8080}
+    url: https://${cockroachdb.api.host}:${cockroachdb.api.port}
+    # Optional: prefer env var if present
+    session-cookie: ${SESSION_COOKIE:${COCKROACHDB_COOKIE:}}
+
+logging:
+  file:
+    name: ./cockroachdb-mcp-server.log
