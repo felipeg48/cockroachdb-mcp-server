@@ -2,6 +2,16 @@
 
 This is an implementation of the MCP (Multi-Cluster Protocol) server for CockroachDB, enabling seamless communication and data sharing across multiple CockroachDB clusters. It uses the CockroachDB's API to get information about the cluster.
 
+*Features*
+
+- [✅] Cluster API Access
+- [✅] Molt Fetch
+- [✅] Molt Verify
+- [🚧] CDC
+- [🚧] SQL
+- [🚧] Code Templates
+
+
 ## Development
 
 This is a Spring Boot Project that uses Spring AI to create an MCP Server for CockroachDB. This is built using the Groovy Programming Language.
