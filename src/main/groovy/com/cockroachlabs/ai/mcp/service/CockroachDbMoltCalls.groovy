@@ -35,7 +35,7 @@ class CockroachDbMoltCalls {
      *        The default is "no-op".
      * @return A complete 'molt fetch' command string that can be copied and executed in a terminal.
      */
-    @Tool(description = "Generates a 'molt fetch' command for data migration from a source database to CockroachDB.")
+    @Tool(name="molt_generate_fetch_command",description = "Generates a 'molt fetch' command for data migration from a source database to CockroachDB.")
     String generateMoltFetchCommand(
             String sourceConnectionString,
             String targetConnectionString,
